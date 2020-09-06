@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  title: API Jogo da velha
+  description: 'API Rest para Jogo da Velha'
+  version: 1.0.0
+  termsOfService: 'http://localhost:5000'
+  contact:
+    email: rodrjuniorsantos@gmail.com
+servers:
+  - url: 'http://localhost:5000'
+    description: 'Primary server, e.g. Main (production) server'
+components:
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: api-token
+paths:
+  /v1/api/game:
+    post:
+      summary: Create a game session. This api returns a match id and the player who will start the match.
+      tags:
+        - Game  
+      responses:
+        '200':
+          description: Player successfully created
+  /v1/api/game/{id}/movement:
+    post:
+      summary: Create a game session. This api returns a match id and the player who will start the match.
+      tags:
+        - Game 
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            minimum: 1
+            description: The player ID.
+      requestBody:
+        description: Game Functions
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - player
+                - position
+              properties:
+                id:
+                  type: string
+                player:
+                  type: string
+                position:
+                  type: object
+                  required:
+                    - x
+                    - y
+                  properties:
+                    x:
+                      type: integer
+                    y: 
+                      type: integer
+      responses:
+        '200':
+          description: Player successfully created
+        '400':
+          description: Status player
+tags:
+  - name: Game
+    description: Game Tic-Toc-Toe
