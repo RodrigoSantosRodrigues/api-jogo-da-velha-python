@@ -7,8 +7,9 @@
     ------------------------------------------------------------------------
 """
 import uuid
-from flask import request, json, Response, Blueprint, session
-from ..models.VelhaModel import MovementSchema
+from flask import request, json, Response, Blueprint
+from ..models.VelhaModel import VelhaModel, MovementSchema
+from ..helpers.Game import Game
 
 velha_api = Blueprint('velha_api', __name__)
 movement_schema = MovementSchema()
@@ -21,19 +22,26 @@ def create_game():
     """
     try:
         uid = str(uuid.uuid4())
-        session[uid] = {'id':uid}
+        game = Game()
+        post = VelhaModel({
+            'id':uid,
+            'round_player': game.player,
+            'matrix': game.matrix,
+            'round_game': game.round_game
+            }
+        )
+        post.save()
         return custom_response({
             'id': uid,
-            'firstPlayer': 'X'
+            'firstPlayer': game.player
             },
             200
         )
-    except Exception as erro:
-        print(erro)
+    except Exception as exc:
         return custom_response({
-            'erro': 'Not request'
+            'error':'Exception: {}'.format(exc)
             },
-             400
+            500
         )
 
 
@@ -45,18 +53,69 @@ def play_game(id):
     """
     try:
         req_data = request.get_json()
-        print(id)
-        data_session = session.get(id)
+        movement_schema.load(req_data)
+
+        if req_data.get('id') != id:
+            return custom_response({
+                'msg': "Id da url é diferente do id do payload"
+                },
+                400
+            )
+        
+        player_session = VelhaModel.get_macth(id)
+        if not player_session:
+            return custom_response({
+                'msg': "Partida não encontrada"
+                },
+                400
+            )
+
+        if req_data.get('player') != player_session.get('round_player'):
+            return custom_response({
+                'msg': "Não é turno do jogador"
+                },
+                400
+            )
+        
+        game = Game(player_session.get('matrix'), player_session.get('round_game'), player_session.get('round_player'))
+        played = game.set_movement(req_data['position'].get('x'), req_data['position'].get('y'))
+        if not played:
+            return custom_response({
+                'msg': "Jogada inválida"
+                },
+                400
+            )
+        post = VelhaModel({
+            'id': id,
+            'round_player': game.player,
+            'matrix': game.matrix,
+            'round_game': game.round_game
+            }
+        )
+        post.update()
+
+        end_game = game.check_game_over()
+        if end_game:
+            return custom_response({
+                'msg': 'Partida finalizada',
+                'winner': end_game
+                },
+                200
+            )
+
+        data = VelhaModel.get_macth(id)
+
         return custom_response({
-            'data': data_session
+            'data': data,
+            'msg': 'Jogada feita com sucesso'
             },
             200
         )
-    except:
+    except Exception as exc:
         return custom_response({
-            'erro': 'Not request'
+            'error':'Exception: {}'.format(exc)
             },
-            400
+            500
         )
 
 

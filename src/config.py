@@ -12,25 +12,19 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv(filename="/.env"))
 
 class Development():
-    """
-    Development environment configuration
-    """
+    """Development environment configuration"""
     DEBUG = True
     TESTING = False
     SECRET_KEY = os.getenv('SECRET_KEY')
 
 class Production():
-    """
-    Production environment configurations
-    """
+    """Production environment configurations"""
     DEBUG = False
     TESTING = False
     SECRET_KEY = os.getenv('SECRET_KEY')
 
 class Testing():
-    """
-    Development environment configuration
-    """
+    """Testing environment configuration"""
     TESTING = True
     SECRET_KEY = os.getenv('SECRET_KEY')
 
@@ -41,5 +35,5 @@ app_config = {
 }
 
 app_host = {
-    'host': os.getenv('APP_HOST') +':'+ os.getenv('APP_PORT')
+    'host': os.getenv('APP_HOST').join(':').join(os.getenv('APP_PORT'))
 }

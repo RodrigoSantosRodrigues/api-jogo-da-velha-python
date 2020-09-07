@@ -24,6 +24,8 @@ paths:
       responses:
         '200':
           description: Player successfully created
+        '500':
+          description: Internal server error
   /v1/api/game/{id}/movement:
     post:
       summary: Create a game session. This api returns a match id and the player who will start the match.
@@ -67,7 +69,9 @@ paths:
         '200':
           description: Player successfully created
         '400':
-          description: Status player
+          description: Status player moviment
+        '500':
+          description: Internal server error
 tags:
   - name: Game
     description: Game Tic-Toc-Toe
