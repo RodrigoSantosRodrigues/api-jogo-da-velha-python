@@ -36,3 +36,4 @@ Notes
 - If you install new dependencies, remember to update the application file. Use the command `pip freeze > requirements.txt`
 - Code based on PEP 8 -- Style Guide for Python Code
 - In case of new features remember to check good practices and check for possible bugs. For verification with specific modules use the command `pylint module_name.py` or `pylint path\module_name.py`
+- In the specs folder there is a pdf document explaining the development of the project
