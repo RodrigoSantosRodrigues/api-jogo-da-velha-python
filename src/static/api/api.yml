@@ -22,7 +22,7 @@ paths:
       tags:
         - Game  
       responses:
-        '200':
+        '201':
           description: Player successfully created
         '500':
           description: Internal server error

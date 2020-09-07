@@ -24,6 +24,8 @@ class VelhaModel:
         self.round_game= data.get('round_game')
 
     def save(self):
+        """save
+        """
         session[self.id] = {
             'id': self.id,
             'round_player': self.round_player,
@@ -32,6 +34,8 @@ class VelhaModel:
         }
 
     def update(self):
+        """update
+        """
         session[self.id] = {
             'id': self.id,
             'round_player': self.round_player,

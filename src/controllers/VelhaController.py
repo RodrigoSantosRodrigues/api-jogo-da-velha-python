@@ -35,7 +35,7 @@ def create_game():
             'id': uid,
             'firstPlayer': game.player
             },
-            200
+            201
         )
     except Exception as exc:
         return custom_response({
@@ -97,7 +97,7 @@ def play_game(id):
         end_game = game.check_game_over()
         if end_game:
             return custom_response({
-                'msg': 'Partida finalizada',
+                'status': 'Partida finalizada',
                 'winner': end_game
                 },
                 200

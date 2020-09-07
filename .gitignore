@@ -108,3 +108,5 @@ Pipfile
 migrations
 migrations/
 migrations/*
+
+.pytest_cache

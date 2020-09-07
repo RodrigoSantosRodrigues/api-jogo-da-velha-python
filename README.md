@@ -15,6 +15,7 @@ API for game applications
     ```
   - Activate or create the project virtual environment with `$ pipenv shell` 
   - `install -r requirements.txt` to install dependencies
+  - Execute the comand `pytest --cov=src --cov-config .coveragerc` for verify create game session
   - Start the app locally with `python run.py`
   - The application should be available at the address `http://localhost:5000/`
   - To access endpoint documentation `http://localhost:5000/apidocs/`
